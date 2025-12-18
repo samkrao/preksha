@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+             x:Class="SubscriptionTracker.AvaloniaApp.Views.ReportsTab">
+  <Grid Margin="8" RowDefinitions="Auto,*,Auto" RowSpacing="12">
+
+    <StackPanel Grid.Row="0" Spacing="10">
+      <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+        <TextBlock Text="View:" VerticalAlignment="Center"/>
+        <ComboBox x:Name="ViewCombo" Width="180" SelectedIndex="0">
+          <ComboBoxItem Content="Payment Due"/>
+          <ComboBoxItem Content="All"/>
+        </ComboBox>
+
+        <TextBlock Text="Search:" VerticalAlignment="Center" Margin="12,0,0,0"/>
+        <TextBox x:Name="SearchBox" Width="260" Watermark="Type name..." />
+
+        <Button x:Name="RefreshBtn" Content="Refresh" Width="110"/>
+      <Button x:Name="ClearSearchBtn" Content="Clear" Width="90"/>
+      </StackPanel>
+
+      <TextBlock x:Name="StatusText" Opacity="0.75" TextWrapping="Wrap"/>
+    </StackPanel>
+
+    <Border Grid.Row="1" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+      <dg:DataGrid x:Name="Grid"
+                   AutoGenerateColumns="False"
+                   IsReadOnly="True"
+                   GridLinesVisibility="All"
+                   SelectionMode="Single"
+                   MinHeight="260">
+        <dg:DataGrid.Columns>
+          <dg:DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*"/>
+          <dg:DataGridTextColumn Header="PaymentType" Binding="{Binding Plan}" Width="*"/>
+          <dg:DataGridTextColumn Header="LastPaymentDate" Binding="{Binding LastPaymentDate}" Width="*"/>
+        </dg:DataGrid.Columns>
+      </dg:DataGrid>
+    </Border>
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12">
+      <Button x:Name="PaySelectedBtn" Content="Pay Selected" Width="140"/>
+    </StackPanel>
+
+  </Grid>
+</UserControl>

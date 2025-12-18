@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:SubscriptionTracker.AvaloniaApp.Views"
+        x:Class="SubscriptionTracker.AvaloniaApp.Views.MainWindow"
+        Width="1100" Height="720"
+        Title="Subscription Tracker">
+  <DockPanel Margin="12">
+    <TextBlock DockPanel.Dock="Top"
+               FontSize="16"
+               Margin="0,0,0,10"
+               Text="Subscription Tracker — Members / Reports / Appointments"/>
+    <TabControl>
+      <TabItem Header="Members">
+        <views:MembersTab/>
+      </TabItem>
+      <TabItem Header="Reports">
+        <views:ReportsTab/>
+      </TabItem>
+      <TabItem Header="Appointments">
+        <views:AppointmentsTab/>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</Window>

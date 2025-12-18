@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SubscriptionTracker.AvaloniaApp.Views.MembersTab">
+  <Grid Margin="8"
+        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+        ColumnDefinitions="210,*"
+        RowSpacing="14"
+        ColumnSpacing="14">
+
+    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Search by Name"/>
+    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="10">
+      <TextBox x:Name="SearchNameBox" Width="360" Watermark="Type part of name..." />
+      <Button x:Name="SearchBtn" Content="Search" Width="110"/>
+      <Button x:Name="PrevBtn" Content="Prev" Width="90" IsEnabled="False"/>
+      <Button x:Name="NextBtn" Content="Next" Width="90" IsEnabled="False"/>
+      <TextBlock x:Name="PageText" Opacity="0.75" VerticalAlignment="Center"/>
+      <Button x:Name="NewBtn" Content="New" Width="90"/>
+    </StackPanel>
+
+    <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Text="Matches"/>
+    <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+      <ListBox x:Name="ResultsList" Height="140" SelectionMode="Single"/>
+    </Border>
+
+    <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Name"/>
+    <TextBox Grid.Row="2" Grid.Column="1" x:Name="NameBox" FontSize="16" Watermark="Enter name..." />
+
+    <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Member ID"/>
+    <TextBox Grid.Row="3" Grid.Column="1" x:Name="IdBox" IsReadOnly="True"/>
+
+    <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Payment Date"/>
+    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+      <DatePicker x:Name="DatePicker" IsEnabled="False"/>
+      <CheckBox x:Name="EditDateCheck" Content="Edit" VerticalAlignment="Center"/>
+      <TextBlock Opacity="0.7" Text="Default is today. Used for NEW member first payment." VerticalAlignment="Center"/>
+    </StackPanel>
+
+    <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="Payment Type"/>
+    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Spacing="18">
+      <RadioButton x:Name="MonthlyRb" Content="Monthly" GroupName="plan"/>
+      <RadioButton x:Name="WeeklyRb" Content="Weekly" GroupName="plan"/>
+      <TextBlock Opacity="0.7" Text="After selecting a match, current type is pre-selected." VerticalAlignment="Center"/>
+    </StackPanel>
+
+    <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Spacing="12">
+      <Button x:Name="SaveBtn" Content="Save New Member" Width="170"/>
+      <Button x:Name="UpdateBtn" Content="Update Member" Width="150"/>
+    </StackPanel>
+
+    <TextBlock Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+               Opacity="0.75"
+               TextWrapping="Wrap"
+               Text="Search: type part of a name, click Search, select the correct person from Matches. Update Member updates Name and/or Payment Type. JoinDate changes only if Edit is checked. Name is unique case-insensitive."/>
+  </Grid>
+</UserControl>

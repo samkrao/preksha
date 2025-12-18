@@ -1,0 +1,172 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+             xmlns:conv="clr-namespace:SubscriptionTracker.AvaloniaApp.Converters"
+             x:Class="SubscriptionTracker.AvaloniaApp.Views.AppointmentsTab">
+
+  <Grid Margin="8"
+        RowDefinitions="Auto,Auto,Auto,Auto,*,Auto"
+        RowSpacing="10">
+
+   
+   <!-- Row 0: Search + paging + Selected (Selected is its own row) -->
+<Grid Grid.Row="0"
+      ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="10"
+      RowSpacing="8">
+
+  <!-- Title -->
+  <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7"
+             Text="Add Appointment (select member)"/>
+
+  <!-- Search row ONLY -->
+  <TextBox Grid.Row="1" Grid.Column="0"
+           x:Name="ApptSearchBox"
+           Width="320"
+           Watermark="Search member name (part)..." />
+
+  <Button Grid.Row="1" Grid.Column="1"
+          x:Name="ApptSearchBtn"
+          Content="Search"
+          Width="110"/>
+
+  <Button Grid.Row="1" Grid.Column="2"
+          x:Name="ApptPrevBtn"
+          Content="Prev"
+          Width="90"
+          IsEnabled="False"/>
+
+  <Button Grid.Row="1" Grid.Column="3"
+          x:Name="ApptNextBtn"
+          Content="Next"
+          Width="90"
+          IsEnabled="False"/>
+
+  <TextBlock Grid.Row="1" Grid.Column="4"
+             x:Name="ApptPageText"
+             Opacity="0.75"
+             VerticalAlignment="Center"/>
+
+  <Button Grid.Row="1" Grid.Column="5"
+          x:Name="ApptClearBtn"
+          Content="Clear"
+          Width="90"/>
+
+  <!-- Selected row ONLY (new line) -->
+  <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"
+              Orientation="Horizontal"
+              Spacing="8">
+    <TextBlock Text="Selected:" VerticalAlignment="Center"/>
+    <TextBlock x:Name="SelectedMemberText"
+               FontWeight="SemiBold"
+               VerticalAlignment="Center"/>
+  </StackPanel>
+
+</Grid>
+
+
+    <!-- Row 1: View controls -->
+    <Grid Grid.Row="1"
+          ColumnDefinitions="Auto,Auto,Auto,Auto,Auto"
+          ColumnSpacing="10">
+      <TextBlock Grid.Column="0" Text="View:" VerticalAlignment="Center"/>
+
+      <ComboBox Grid.Column="1" x:Name="RangeCombo" Width="220" SelectedIndex="0">
+        <ComboBoxItem Content="Daily"/>
+        <ComboBoxItem Content="Next 7 Days"/>
+      </ComboBox>
+
+      <TextBlock Grid.Column="2" Text="From Date:" VerticalAlignment="Center"/>
+      <DatePicker Grid.Column="3" x:Name="RangeDatePicker"/>
+      <Button Grid.Column="4" x:Name="RefreshRangeBtn" Content="Refresh" Width="110"/>
+    </Grid>
+
+    <!-- Row 2: Matches -->
+    <Grid Grid.Row="2"
+          ColumnDefinitions="Auto,*"
+          ColumnSpacing="14">
+      <TextBlock Grid.Column="0" VerticalAlignment="Top" Text="Matches"/>
+      <Border Grid.Column="1"
+              BorderThickness="1"
+              BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+        <ListBox x:Name="ApptResultsList"
+                 Height="110"
+                 SelectionMode="Single"/>
+      </Border>
+    </Grid>
+
+    <!-- Row 3: Add appointment controls (will NEVER go behind grid now) -->
+    <Grid Grid.Row="3"
+          ColumnDefinitions="Auto,Auto,Auto,Auto"
+          ColumnSpacing="10">
+      <TextBlock Grid.Column="0" Text="Appointment:" VerticalAlignment="Center"/>
+
+      <DatePicker Grid.Column="1" x:Name="ApptDatePicker"/>
+      <TimePicker Grid.Column="2" x:Name="ApptTimePicker"/>
+
+      <Button Grid.Column="3"
+              x:Name="AddApptBtn"
+              Content="Add Appointment"
+              Width="160"/>
+    </Grid>
+
+    <!-- Row 4: DataGrid takes remaining space -->
+ <Border Grid.Row="4"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+  <dg:DataGrid x:Name="TodayGrid"
+               AutoGenerateColumns="False"
+               IsReadOnly="True"
+               GridLinesVisibility="All"
+               SelectionMode="Single"
+               HorizontalScrollBarVisibility="Disabled"
+               VerticalScrollBarVisibility="Auto"
+               MinHeight="220">
+
+    <dg:DataGrid.Columns>
+      <dg:DataGridTextColumn Header="When" Binding="{Binding When}" Width="170"/>
+      <dg:DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*"/>
+      <dg:DataGridTextColumn Header="PaymentType" Binding="{Binding Plan}" Width="120"/>
+      <dg:DataGridTextColumn Header="LastPaymentDate" Binding="{Binding LastPaymentDate}" Width="150"/>
+      <dg:DataGridTextColumn Header="Due" Binding="{Binding DueStatus}" Width="80"/>
+
+      <dg:DataGridTemplateColumn Header="Payment" Width="110">
+        <dg:DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <Button Content="{Binding DueStatus}"
+                    IsEnabled="{Binding DueStatus, Converter={x:Static conv:StringNotOkConverter.Instance}}"
+                    Click="PaymentDone_Click"/>
+          </DataTemplate>
+        </dg:DataGridTemplateColumn.CellTemplate>
+      </dg:DataGridTemplateColumn>
+
+      <dg:DataGridTemplateColumn Header="Update" Width="90">
+        <dg:DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <Button Content="Update" Click="UpdateAppt_Click"/>
+          </DataTemplate>
+        </dg:DataGridTemplateColumn.CellTemplate>
+      </dg:DataGridTemplateColumn>
+      <dg:DataGridTemplateColumn Header="Cancel" Width="90">
+        <dg:DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <Button Content="Cancel"
+                    Background="#D9534F"
+                    Foreground="White"
+                    Click="CancelAppt_Click"/>
+          </DataTemplate>
+        </dg:DataGridTemplateColumn.CellTemplate>
+      </dg:DataGridTemplateColumn>
+
+    </dg:DataGrid.Columns>
+  </dg:DataGrid>
+</Border>
+
+    <!-- Row 5: Status -->
+    <TextBlock Grid.Row="5"
+               x:Name="ApptStatusText"
+               Opacity="0.75"
+               TextWrapping="Wrap"/>
+  </Grid>
+</UserControl>
